@@ -1,0 +1,11 @@
+Django==1.9.1
+MySQL-python==1.2.5
+argparse==1.2.1
+django-bootstrap-breadcrumbs==0.7.2
+django-braces==1.8.1
+django-crispy-forms==1.6.0
+django-meta==0.3.1
+gunicorn==19.4.5
+setproctitle==1.1.9
+six==1.10.0
+wsgiref==0.1.2

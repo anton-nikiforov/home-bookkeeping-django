@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Category" "category_list" %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-8">
+		<div class="form-group">
+			<button class="btn btn-success" data-toggle="modal" data-target="#create_form">Create</button>
+		</div>
+		<table class="table-bordered table" id="list">
+			<thead>
+				<tr>
+					<th width="60">ID</th>
+					<th>Title</th>
+					<th>Operation</th>
+					<th width="80">Operations</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for category in categories %}
+					<tr data-tr="{{ category.id }}">				
+						<td>{{ category.id }}</td>
+						<td>{{ category.title }}</td>
+						<td>{{ category.operation }}</td>				
+						<td>
+							<div style="text-align: center;">
+								<button data-toggle="modal" data-target="#update_form_{{ category.id }}" class="btn btn-primary btn-xs  glyphicon glyphicon-pencil"></button>
+								<a href="{% url "category_delete_ajax" category.id %}" data-action="delete" data-id="{{ category.id }}" class="btn btn-danger btn-xs  glyphicon glyphicon-remove"></a>
+							</div>
+							<div class="modal fade" id="update_form_{{ category.id }}">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											<h4 class="modal-title">Update category "{{ category.title }}"</h4>
+										</div>
+										<div class="modal-body">							
+											{% crispy category.form_update %}
+										</div>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="modal fade" id="create_form">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Create currency</h4>
+			</div>
+			<div class="modal-body">
+				{% crispy form_create %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

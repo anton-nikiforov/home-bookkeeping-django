@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap_breadcrumbs %}
+{% load crispy_forms_tags %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Hashtags" "hashtags_list" %}
+    {% breadcrumb meta.title request.resolver_match.url_name %}
+{% endblock %}
+
+{% block content %}
+	{% crispy form %}
+{% endblock content %}
