@@ -6,7 +6,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.layout import Submit, HTML
 
-from ..models import Elements
+from main.models.elements import Elements
 
 class ElementsCreateForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):

@@ -2,11 +2,9 @@
 from django.contrib import messages
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpRequest
 
-from ..forms import ElementsCreateForm, ElementsUpdateForm
-from ..models import Elements
-from views_json import JSONDeleteView, JSONFormView
+from main.forms.elements import ElementsCreateForm, ElementsUpdateForm
+from main.models.elements import Elements
 
 from meta.views import MetadataMixin
 
@@ -14,7 +12,7 @@ class ElementsListView(MetadataMixin, ListView):
 	model = Elements
 	title = 'Records'
 
-class ElementsCreateView(JSONFormView, CreateView):
+class ElementsCreateView(MetadataMixin, CreateView):
 	model = Elements
 	form_class = ElementsCreateForm
 	success_message = 'Created'
