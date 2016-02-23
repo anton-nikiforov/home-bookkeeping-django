@@ -18,7 +18,8 @@
 		<div class="container">
 			<ul class="nav nav-tabs">
 				<li class="{% is_active 'home' %}"><a href="{% url 'home' %}">Home</a></li>
-				<li class="{% is_active 'hashtags_list|hashtags_create|hashtags_update'|split:'|' %}"><a href="{% url 'hashtags_list' %}">Hashtags</a></li>
+				<li class="{% is_active 'elements_list|elements_create|elements_update|elements_delete'|split:'|' %}"><a href="{% url 'elements_list' %}">Records</a></li>
+				<li class="{% is_active 'hashtags_list|hashtags_create|hashtags_update|hashtags_delete'|split:'|' %}"><a href="{% url 'hashtags_list' %}">Hashtags</a></li>
 				<li class="{% is_active 'category_list' %}"><a href="{% url 'category_list' %}">Categories</a></li>
 				<li class="{% is_active 'currency_list' %}"><a href="{% url 'currency_list' %}">Currencies</a></li>
 			</ul>

@@ -1,7 +1,8 @@
 from datetime import datetime    
 from django.db import models
 
-from . import (Category, Hashtags)
+from category import Category
+from hashtags import Hashtags
 
 class Elements(models.Model):
 	

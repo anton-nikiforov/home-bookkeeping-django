@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Records" "elements_list" %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-8">
+		<div class="form-group">
+			<a class="btn btn-success" href="{% url 'elements_create' %}">Create</a>
+		</div>
+		<table class="table-bordered table">
+			<thead>
+				<tr>
+					<th width="60">ID</th>
+					<th>Title</th>
+					<th width="80">Operations</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock content %}

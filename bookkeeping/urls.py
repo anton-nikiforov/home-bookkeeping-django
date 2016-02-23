@@ -16,22 +16,31 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from main import views
+from main.views import home, hashtags, currency, category, elements
 
 urlpatterns = [
-	url(regex=r'^$', view=views.home, name='home'),
-	url(regex=r'^hashtags/$', view=views.HashtagsListView.as_view(), name='hashtags_list'),
-	url(regex=r'^hashtags/create/$', view=views.HashtagsCreateView.as_view(), name='hashtags_create'),
-	url(regex=r'^hashtags/(?P<pk>\d+)/$', view=views.HashtagsUpdateView.as_view(), name='hashtags_update'),
-	url(regex=r'^hashtags/delete/(?P<pk>\d+)/$', view=views.HashtagsDeleteView.as_view(), name='hashtags_delete'),
-	url(regex=r'^hashtags/delete/(?P<pk>\d+)/ajax/$', view=views.JSONHashtagsDeleteView.as_view(), name='hashtags_delete_ajax'),
-	url(regex=r'^currency/$', view=views.CurrencyListView.as_view(), name='currency_list'),
-	url(regex=r'^currency/create/ajax/$', view=views.CurrencyCreateView.as_view(), name='currency_create_ajax'),
-	url(regex=r'^currency/(?P<pk>\d+)/ajax/$', view=views.CurrencyUpdateView.as_view(), name='currency_update_ajax'),
-	url(regex=r'^currency/delete/(?P<pk>\d+)/ajax/$', view=views.JSONCurrencyDeleteView.as_view(), name='currency_delete_ajax'),
-	url(regex=r'^category/$', view=views.CategoryListView.as_view(), name='category_list'),
-	url(regex=r'^category/create/ajax/$', view=views.CategoryCreateView.as_view(), name='category_create_ajax'),
-	url(regex=r'^category/(?P<pk>\d+)/ajax/$', view=views.CategoryUpdateView.as_view(), name='category_update_ajax'),
-	url(regex=r'^category/delete/(?P<pk>\d+)/ajax/$', view=views.JSONCategoryDeleteView.as_view(), name='category_delete_ajax'),	
+	url(regex=r'^$', view=home, name='home'),
+	
+	url(regex=r'^hashtags/$', view=hashtags.HashtagsListView.as_view(), name='hashtags_list'),
+	url(regex=r'^hashtags/create/$', view=hashtags.HashtagsCreateView.as_view(), name='hashtags_create'),
+	url(regex=r'^hashtags/(?P<pk>\d+)/$', view=hashtags.HashtagsUpdateView.as_view(), name='hashtags_update'),
+	url(regex=r'^hashtags/delete/(?P<pk>\d+)/$', view=hashtags.HashtagsDeleteView.as_view(), name='hashtags_delete'),
+	url(regex=r'^hashtags/delete/(?P<pk>\d+)/ajax/$', view=hashtags.JSONHashtagsDeleteView.as_view(), name='hashtags_delete_ajax'),
+	
+	url(regex=r'^currency/$', view=currency.CurrencyListView.as_view(), name='currency_list'),
+	url(regex=r'^currency/create/ajax/$', view=currency.CurrencyCreateView.as_view(), name='currency_create_ajax'),
+	url(regex=r'^currency/(?P<pk>\d+)/ajax/$', view=currency.CurrencyUpdateView.as_view(), name='currency_update_ajax'),
+	url(regex=r'^currency/delete/(?P<pk>\d+)/ajax/$', view=currency.JSONCurrencyDeleteView.as_view(), name='currency_delete_ajax'),
+	
+	url(regex=r'^category/$', view=category.CategoryListView.as_view(), name='category_list'),
+	url(regex=r'^category/create/ajax/$', view=category.CategoryCreateView.as_view(), name='category_create_ajax'),
+	url(regex=r'^category/(?P<pk>\d+)/ajax/$', view=category.CategoryUpdateView.as_view(), name='category_update_ajax'),
+	url(regex=r'^category/delete/(?P<pk>\d+)/ajax/$', view=category.JSONCategoryDeleteView.as_view(), name='category_delete_ajax'),	
+
+	url(regex=r'^elements/$', view=elements.ElementsListView.as_view(), name='elements_list'),
+	url(regex=r'^elements/create/$', view=elements.ElementsCreateView.as_view(), name='elements_create'),
+	url(regex=r'^elements/(?P<pk>\d+)/$', view=elements.ElementsUpdateView.as_view(), name='elements_update'),
+	url(regex=r'^elements/delete/(?P<pk>\d+)/$', view=elements.ElementsDeleteView.as_view(), name='elements_delete'),
+
 	url(r'^admin/', include(admin.site.urls)),
 ]

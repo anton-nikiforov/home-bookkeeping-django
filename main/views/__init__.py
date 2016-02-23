@@ -3,3 +3,4 @@ from main.views.home import *
 from main.views.hashtags import *
 from main.views.currency import *
 from main.views.category import *
+from main.views.elements import *
