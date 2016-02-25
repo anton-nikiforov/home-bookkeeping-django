@@ -11,7 +11,7 @@ from main.models.elements import Elements
 class ElementsCreateForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(ElementsCreateForm, self).__init__(*args, **kwargs)
-	
+
 		self.helper = FormHelper(self)
 
 		self.helper.form_action = reverse_lazy('elements_create')
