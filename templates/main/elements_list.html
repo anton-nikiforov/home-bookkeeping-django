@@ -17,12 +17,29 @@
 			<thead>
 				<tr>
 					<th width="60">ID</th>
-					<th>Title</th>
+					<th>Category</th>
+					<th>Created</th>
+					<th>Total</th>
+					<th>Hashtags</th>
 					<th width="80">Operations</th>
 				</tr>
 			</thead>
 			<tbody>
-				
+				{% for element in elements %}
+					<tr data-tr="{{ element.id }}">				
+						<td>{{ element.id }}</td>
+						<td>{{ element.category }}</td>
+						<td>{{ element.created }}</td>
+						<td>{{ element.total }} {{ element.currency.symbol }}</td>
+						<td>{{ element.hashtags }}</td>
+						<td>
+							<div style="text-align: center;">
+								<a href="{% url "elements_update" element.id %}" class="btn btn-primary btn-xs  glyphicon glyphicon-pencil"></a>
+								<a href="{% url "elements_delete" element.id %}" class="btn btn-danger btn-xs  glyphicon glyphicon-remove"></a>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
 			</tbody>
 		</table>
 	</div>

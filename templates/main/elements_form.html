@@ -10,7 +10,6 @@
 {% endblock %}
 
 {% block content %}
-	{% crispy form %}
 	<div class="row">
 		<div class="col-sm-8">
 			<form class="form-horizontal" method="post" action="">
@@ -26,6 +25,16 @@
 						{{ form.category }}
 					</div>
 				</div>
+				<div class="form-group">
+					{{ form.currency.errors }}
+					<label class="col-sm-4 control-label" for="{{ form.currency.id_for_label }}">
+						{{ form.currency.label }}
+						{% if form.currency.field.required %} <span class="asteriskField">*</span>{% endif %}
+					</label>
+					<div class="controls col-sm-8">
+						{{ form.currency }}
+					</div>
+				</div>				
 				<div class="form-group">
 					{{ form.created.errors }}
 					<label class="col-sm-4 control-label" for="{{ form.created.id_for_label }}">
@@ -44,8 +53,18 @@
 					</label>
 					<div class="controls col-sm-8">
 						{{ form.total }}
-					</div>
+					</div>				
 				</div>
+				<div class="form-group">
+					{{ form.hashtags.errors }}
+					<label class="col-sm-4 control-label" for="{{ form.hashtags.id_for_label }}">
+						{{ form.hashtags.label }}
+						{% if form.hashtags.field.required %} <span class="asteriskField">*</span>{% endif %}
+					</label>
+					<div class="controls col-sm-8">
+						{{ form.hashtags }}
+					</div>				
+				</div>				
 				<div class="form-group">
 					<div class="col-sm-4"></div>
 					<div class="col-sm-8">

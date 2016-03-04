@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+from django.conf import settings
 import django.db.models.deletion
 import main.models.elements
 
@@ -17,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='elements',
             name='category',
-            field=models.ForeignKey(default=main.models.elements.get_default_category, on_delete=django.db.models.deletion.CASCADE, to='main.Category'),
+            field=models.ForeignKey(default=settings.DEFAULT_CATEGORY_ID, on_delete=django.db.models.deletion.CASCADE, to='main.Category'),
         ),
     ]

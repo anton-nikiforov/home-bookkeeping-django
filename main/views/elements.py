@@ -12,6 +12,12 @@ class ElementsListView(MetadataMixin, ListView):
 	model = Elements
 	title = 'Records'
 
+	def get_context_data(self, **kwargs):
+		context = super(ElementsListView, self).get_context_data(**kwargs)
+		context['elements'] = Elements.objects.all()
+
+		return context
+
 class ElementsCreateView(MetadataMixin, CreateView):
 	model = Elements
 	form_class = ElementsCreateForm

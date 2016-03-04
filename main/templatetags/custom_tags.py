@@ -7,7 +7,7 @@ def is_active(context, urlname):
     if context['request'].resolver_match.url_name in urlname:
         return 'active'
     return ''
-	
+
 @register.filter(name='split')
 def split(value, arg):
     return value.split(arg)
