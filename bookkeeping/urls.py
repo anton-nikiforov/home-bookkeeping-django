@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from main.views import home, hashtags, currency, category, elements
+from import_app.views import import_view
 
 urlpatterns = [
 	url(regex=r'^$', view=home, name='home'),
@@ -41,6 +42,8 @@ urlpatterns = [
 	url(regex=r'^elements/create/$', view=elements.ElementsCreateView.as_view(), name='elements_create'),
 	url(regex=r'^elements/(?P<pk>\d+)/$', view=elements.ElementsUpdateView.as_view(), name='elements_update'),
 	url(regex=r'^elements/delete/(?P<pk>\d+)/$', view=elements.ElementsDeleteView.as_view(), name='elements_delete'),
+
+	url(regex=r'^import/$', view=import_view, name='import_view'),
 
 	url(r'^admin/', include(admin.site.urls)),
 ]
