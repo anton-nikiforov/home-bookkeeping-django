@@ -31,7 +31,11 @@
 						<td>{{ element.category }}</td>
 						<td>{{ element.created }}</td>
 						<td>{{ element.total }} {{ element.currency.symbol }}</td>
-						<td>{{ element.hashtags }}</td>
+						<td>
+							{% for hashtag in element.hashtags.all %}
+								<span class="label label-primary">{{ hashtag.title }}</span>
+							{% endfor %}				
+						</td>
 						<td>
 							<div style="text-align: center;">
 								<a href="{% url "elements_update" element.id %}" class="btn btn-primary btn-xs  glyphicon glyphicon-pencil"></a>
