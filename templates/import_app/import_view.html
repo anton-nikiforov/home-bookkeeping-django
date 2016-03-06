@@ -1,5 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<p>Form here to start import data</p>
+	<div class="row">
+		<div class="col-md-8">
+			<div class="form-group">{{ message }}</div>
+			<form class="form-group" action="" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="action" value="import/category" />
+				<button class="btn btn-primary" type="submit">Импорт категорий</button>
+			</form>
+			<form class="form-group" action="" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="action" value="import/hashtags" />
+				<button class="btn btn-primary" type="submit">Импорт хештегов</button>
+			</form>
+			<form class="form-group" action="" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="action" value="import/elements" />
+				<button class="btn btn-primary" type="submit">Импорт элементов</button>
+			</form>	
+			<form class="form-group" action="" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="action" value="import/elements_hashtags" />
+				<button class="btn btn-primary" type="submit">Импорт связей элементов с тегами</button>
+			</form>									
+		</div>
+	</div>
 {% endblock content %}
