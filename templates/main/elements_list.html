@@ -13,21 +13,19 @@
 		<div class="form-group">
 			<a class="btn btn-success" href="{% url 'elements_create' %}">Create</a>
 		</div>
-		<table class="table-bordered table">
+		<table class="table-stripped table">
 			<thead>
 				<tr>
-					<th width="60">ID</th>
-					<th>Category</th>
-					<th>Created</th>
-					<th>Total</th>
-					<th>Hashtags</th>
-					<th width="80">Operations</th>
+					<th class="col-sm-2">Category</th>
+					<th class="col-sm-2">Created</th>
+					<th class="col-sm-2">Total</th>
+					<th class="col-sm-4">Hashtags</th>
+					<th class="col-sm-2"></th>
 				</tr>
 			</thead>
 			<tbody>
-				{% for element in elements %}
+				{% for element in elements_list %}
 					<tr data-tr="{{ element.id }}">				
-						<td>{{ element.id }}</td>
 						<td>{{ element.category }}</td>
 						<td>{{ element.created }}</td>
 						<td>{{ element.total }} {{ element.currency.symbol }}</td>
@@ -46,6 +44,23 @@
 				{% endfor %}
 			</tbody>
 		</table>
+		{% if is_paginated %}
+			<ul class="pagination">
+				{% if page_obj.has_previous %}
+				    <li>
+				        <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span>
+				    </li>
+				{% endif %}
+				    <li class="">
+				        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+				    </li>
+				{% if page_obj.has_next %}
+				    <li>
+				        <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+				    </li>
+				{% endif %}
+			</ul>
+		{% endif %}	
 	</div>
 </div>
 {% endblock content %}

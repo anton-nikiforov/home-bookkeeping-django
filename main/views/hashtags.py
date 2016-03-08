@@ -13,11 +13,6 @@ class HashtagsListView(MetadataMixin, ListView):
 	model = Hashtags
 	title = 'Hashtags'
 	
-	def get_context_data(self, **kwargs):
-		context = super(HashtagsListView, self).get_context_data(**kwargs)
-		context['hashtags'] = Hashtags.objects.all()
-		return context
-	
 class HashtagsCreateView(MetadataMixin, CreateView):
 	model = Hashtags
 	success_url = reverse_lazy('hashtags_list')

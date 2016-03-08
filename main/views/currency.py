@@ -16,12 +16,12 @@ class CurrencyListView(MetadataMixin, ListView):
 	
 	def get_context_data(self, **kwargs):
 		context = super(CurrencyListView, self).get_context_data(**kwargs)
-		currencies = Currency.objects.all()
+		currencies = context['currency_list']
 		
 		for currency in currencies:	
 			setattr(currency, 'form_update', CurrencyUpdateForm(instance=currency, prefix=getattr(currency, 'id')))
 			
-		context['currencies'] = currencies			
+		context['currency_list'] = currencies			
 		context['form_create'] = CurrencyCreateForm
 		
 		return context

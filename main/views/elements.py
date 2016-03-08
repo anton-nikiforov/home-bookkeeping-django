@@ -3,20 +3,17 @@ from django.contrib import messages
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 
+from django.core.paginator import Paginator
+
 from main.forms.elements import ElementsCreateForm, ElementsUpdateForm
 from main.models.elements import Elements
 
 from meta.views import MetadataMixin
 
 class ElementsListView(MetadataMixin, ListView):
-	model = Elements
+	queryset = Elements.objects.all().select_related('currency', 'category').prefetch_related('hashtags').order_by('-created')
 	title = 'Records'
-
-	def get_context_data(self, **kwargs):
-		context = super(ElementsListView, self).get_context_data(**kwargs)
-		context['elements'] = Elements.objects.all()
-
-		return context
+	paginate_by = 15
 
 class ElementsCreateView(MetadataMixin, CreateView):
 	model = Elements
