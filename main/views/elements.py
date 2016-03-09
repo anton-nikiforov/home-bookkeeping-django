@@ -12,7 +12,7 @@ from meta.views import MetadataMixin
 
 class ElementsListView(MetadataMixin, ListView):
 	title = 'Records'
-	paginate_by = 10
+	paginate_by = 15
 
 	def get_queryset(self):
 		return Elements.objects.all().select_related('currency', 'category').prefetch_related('hashtags').order_by('-created')

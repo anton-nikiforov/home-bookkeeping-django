@@ -11,7 +11,7 @@ from meta.views import MetadataMixin
 
 class HashtagsListView(MetadataMixin, ListView):
 	title = 'Hashtags'
-	paginate_by = 10
+	paginate_by = 15
 
 	def get_queryset(self):
 		return Hashtags.objects.all().order_by('title')
