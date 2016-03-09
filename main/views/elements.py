@@ -11,9 +11,12 @@ from main.models.elements import Elements
 from meta.views import MetadataMixin
 
 class ElementsListView(MetadataMixin, ListView):
-	queryset = Elements.objects.all().select_related('currency', 'category').prefetch_related('hashtags').order_by('-created')
 	title = 'Records'
-	paginate_by = 15
+	paginate_by = 10
+
+	def get_queryset(self):
+		return Elements.objects.all().select_related('currency', 'category').prefetch_related('hashtags').order_by('-created')
+
 
 class ElementsCreateView(MetadataMixin, CreateView):
 	model = Elements

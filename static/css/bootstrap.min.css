@@ -12,3 +12,8 @@ h1 {
 	margin-bottom: 20px;
 	font-size: 26px;
 }
+._sidebar {margin-top:60px;}
+
+@media screen and (max-width: 768px) {
+	._sidebar {margin-top: 15px;}
+}

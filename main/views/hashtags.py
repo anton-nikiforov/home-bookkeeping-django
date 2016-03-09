@@ -10,8 +10,11 @@ from views_json import JSONDeleteView
 from meta.views import MetadataMixin
 
 class HashtagsListView(MetadataMixin, ListView):
-	model = Hashtags
 	title = 'Hashtags'
+	paginate_by = 10
+
+	def get_queryset(self):
+		return Hashtags.objects.all().order_by('title')
 	
 class HashtagsCreateView(MetadataMixin, CreateView):
 	model = Hashtags
