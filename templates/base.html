@@ -25,6 +25,7 @@
 				 	<a href="{% url 'category_list' %}" class="list-group-item {% is_active 'category_list' %}">Categories</a>
 				 	<a href="{% url 'currency_list' %}" class="list-group-item {% is_active 'currency_list' %}">Currencies</a>
 				</div>
+				{% block filter %}{% endblock filter %}
 			</div>
 			<div class="col-sm-9">
 				<div class="row">

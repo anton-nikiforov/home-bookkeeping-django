@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Records" "elements_list" %}
+{% endblock %}
+
+{% block filter %}
+	{% crispy filter.form %}
+{% endblock filter %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-12">
+		<div class="form-group">
+			<a class="btn btn-success" href="{% url 'elements_create' %}">Create</a>
+		</div>
+	    {% if elements_list %}	
+			<table class="table-stripped table">
+				<thead>
+					<tr>
+						<th class="col-sm-2">Category</th>
+						<th class="col-sm-2">Created</th>
+						<th class="col-sm-2">Total</th>
+						<th class="col-sm-4">Hashtags</th>
+						<th class="col-sm-2"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for element in elements_list %}
+						<tr data-tr="{{ element.id }}">				
+							<td>{{ element.category }}</td>
+							<td>{{ element.created }}</td>
+							<td>{{ element.total }} {{ element.currency.symbol }}</td>
+							<td>
+								{% for hashtag in element.hashtags.all %}
+									<span class="label label-primary">{{ hashtag.title }}</span>
+								{% endfor %}				
+							</td>
+							<td>
+								<div style="text-align: center;">
+									<a href="{% url "elements_update" element.id %}" class="btn btn-primary btn-xs  glyphicon glyphicon-pencil"></a>
+									<a href="{% url "elements_delete" element.id %}" class="btn btn-danger btn-xs  glyphicon glyphicon-remove"></a>
+								</div>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>  
+		{% else %}
+			<div class="alert alert-warning" role="alert">Oops, nothing was found.</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock content %}

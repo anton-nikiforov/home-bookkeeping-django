@@ -39,7 +39,9 @@ urlpatterns = [
 	url(regex=r'^category/(?P<pk>\d+)/ajax/$', view=category.CategoryUpdateView.as_view(), name='category_update_ajax'),
 	url(regex=r'^category/delete/(?P<pk>\d+)/ajax/$', view=category.JSONCategoryDeleteView.as_view(), name='category_delete_ajax'),	
 
-	url(regex=r'^elements/$', view=elements.ElementsListView.as_view(), name='elements_list'),
+	#url(regex=r'^elements/$', view=elements.ElementsListView.as_view(), name='elements_list'),
+	url(regex=r'^elements/$', view=elements.elements_list, name='elements_list'),
+	url(regex=r'^elements/filter/(?P<filter>.+)/$', view=elements.ElementsListView.as_view(), name='elements_list_filter'),	
 	url(regex=r'^elements/create/$', view=elements.ElementsCreateView.as_view(), name='elements_create'),
 	url(regex=r'^elements/(?P<pk>\d+)/$', view=elements.ElementsUpdateView.as_view(), name='elements_update'),
 	url(regex=r'^elements/delete/(?P<pk>\d+)/$', view=elements.ElementsDeleteView.as_view(), name='elements_delete'),
