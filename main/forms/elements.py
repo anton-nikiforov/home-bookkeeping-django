@@ -30,14 +30,11 @@ class ElementsFilterFormBase(forms.Form):
 		self.helper = FormHelper(self)
 
 		self.helper.form_method = 'GET'
-		#self.helper.form_class = 'form-horizontal'
-
 		self.helper.help_text_inline = True
-		#self.helper.label_class = 'col-sm-12'
-		#self.helper.field_class = 'col-sm-12'
-		
+		self.helper.attrs = {'data_action': 'filter'}
+
 		self.helper.layout.append(FormActions(
 			Submit('', 'Search'),
 		))
 
-		#self.fields['created'].widget.attrs['class']# = 'daterangefilter'
+		self.fields['created'].widget.attrs['class'] = 'daterange form-control'

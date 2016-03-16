@@ -17,3 +17,7 @@ h1 {
 @media screen and (max-width: 768px) {
 	._sidebar {margin-top: 15px;}
 }
+.form-control.daterange {
+	width: 49%;
+	display: inline-block;
+}
