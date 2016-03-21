@@ -20,7 +20,7 @@
 			<div class="col-sm-3 _sidebar">
 				<div class="list-group">
 				 	<a href="{% url 'home' %}" class="list-group-item {% is_active 'home' %}">Home</a>
-				 	<a href="{% url 'elements_list' %}" class="list-group-item {% is_active 'elements_list|elements_create|elements_update|elements_delete'|split:'|' %}">Records</a>
+				 	<a href="{% url 'elements_list' %}" class="list-group-item {% is_active 'elements_list|elements_create|elements_update|elements_delete|elements_list_filter'|split:'|' %}">Records</a>
 				 	<a href="{% url 'hashtags_list' %}" class="list-group-item {% is_active 'hashtags_list|hashtags_create|hashtags_update|hashtags_delete'|split:'|' %}">Hashtags</a>
 				 	<a href="{% url 'category_list' %}" class="list-group-item {% is_active 'category_list' %}">Categories</a>
 				 	<a href="{% url 'currency_list' %}" class="list-group-item {% is_active 'currency_list' %}">Currencies</a>

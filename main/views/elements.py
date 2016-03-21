@@ -6,6 +6,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
+from django.db.models import Sum
 
 from main.forms import ElementsCreateForm, ElementsUpdateForm, ElementsFilterFormBase
 from main.models.elements import Elements
@@ -45,7 +46,9 @@ def elements_list(request, filter_url=None):
 	qdict = QueryDict('', mutable=True)
 	qdict.update(MultiValueDict(filter_data))			
 
-	f = ElementsFilter(qdict or request.GET, queryset=Elements.objects.all().select_related('currency', 'category').prefetch_related('hashtags').order_by('-created'))
+	f = ElementsFilter(qdict or request.GET, queryset=Elements.objects.all() \
+		.select_related('currency', 'category').prefetch_related('hashtags') \
+		.order_by('-created', 'total'))
 
 	paginator = Paginator(f.qs, 15)
 	page = request.GET.get('page')
@@ -63,6 +66,7 @@ def elements_list(request, filter_url=None):
 		'page_obj': page,
 		'is_paginated': page.has_other_pages(),
 		'elements_list': page.object_list,
+		'summary': f.qs.values('category__title', 'currency__symbol').annotate(sum=Sum('total')).order_by('sum')
 	}
 
 	return render(request, 'main/elements_list_filter.html', context)
@@ -73,7 +77,8 @@ class ElementsListView(MetadataMixin, ListView):
 	paginate_by = 15
 
 	def get_queryset(self):
-		return Elements.objects.all().select_related('currency', 'category').prefetch_related('hashtags').order_by('-created')
+		return Elements.objects.all().select_related('currency', 'category') \
+				.prefetch_related('hashtags').order_by('-created')
 
 
 class ElementsCreateView(MetadataMixin, CreateView):
