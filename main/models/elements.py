@@ -2,9 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.conf import settings
 
-from category import Category
-from hashtags import Hashtags
-from currency import Currency
+from . import Category, Hashtags, Currency
 
 class Elements(models.Model):
 

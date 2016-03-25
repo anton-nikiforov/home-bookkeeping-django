@@ -1,0 +1,27 @@
+.form-group__tags .glyphicon-remove {
+    color: #fff;
+    float: right;
+    margin: 0 0 0 6px;
+    text-decoration: none;
+}
+.form-group__tags .label {
+    display: inline-block;
+    margin: 0 6px 0 0;
+    padding: 4px 4px 6px;
+    text-align: left;
+    white-space: normal;
+}
+.form-group__tags {padding-bottom: 18px;}
+.btn-group.btn-group__large {
+    width: 75%;
+}
+.btn-group.btn-group__small {
+    width: 25%;
+}
+.btn-group > .btn-group:first-child:not(:last-child) > .form-control:last-child {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+.glyphicon.btn {
+    top: 0;
+}

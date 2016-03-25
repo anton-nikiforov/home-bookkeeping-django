@@ -6,7 +6,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.layout import Submit, HTML
 
-from main.models.elements import Elements
+from main.models import Elements, Hashtags
+from main.forms.widgets import MultipleSearch
 
 class ElementsCreateForm(forms.ModelForm):
 	created = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)
@@ -21,10 +22,19 @@ class ElementsCreateForm(forms.ModelForm):
 
 	class Meta:
 		model = Elements
-		fields = '__all__'	
+		fields = '__all__'
+		widgets = {
+			'hashtags': MultipleSearch
+		}
 
 class ElementsUpdateForm(ElementsCreateForm):
-	pass
+	
+	def __init__(self, *args, **kwargs):
+		super(ElementsUpdateForm, self).__init__(*args, **kwargs)
+		hashtags_initial = self.initial.get('hashtags', None)
+
+		if hashtags_initial is not None:
+			self.fields['hashtags'].queryset = Hashtags.objects.filter(id__in=hashtags_initial)
 
 class ElementsFilterFormBase(forms.Form):
 	
