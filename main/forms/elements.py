@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.conf import settings
+from django.core.urlresolvers import reverse_lazy
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions
@@ -19,6 +20,12 @@ class ElementsCreateForm(forms.ModelForm):
 			self.fields[key].widget.attrs['class'] = 'form-control'
 		
 		self.fields['created'].widget.attrs['class'] += ' daterange'
+
+		self.fields['hashtags'].widget.search_url = reverse_lazy(
+			'hashtags_search_ajax')
+
+		self.fields['hashtags'].widget.create_url = reverse_lazy(
+			'hashtags_create_ajax')
 
 	class Meta:
 		model = Elements

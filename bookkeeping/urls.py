@@ -28,7 +28,9 @@ urlpatterns = [
 	url(regex=r'^hashtags/(?P<pk>\d+)/$', view=hashtags.HashtagsUpdateView.as_view(), name='hashtags_update'),
 	url(regex=r'^hashtags/delete/(?P<pk>\d+)/$', view=hashtags.HashtagsDeleteView.as_view(), name='hashtags_delete'),
 	url(regex=r'^hashtags/delete/(?P<pk>\d+)/ajax/$', view=hashtags.JSONHashtagsDeleteView.as_view(), name='hashtags_delete_ajax'),
-	
+	url(regex=r'^hashtags/search/ajax/$', view=hashtags.JSONHashtagsSearchView.as_view(), name='hashtags_search_ajax'),
+	url(regex=r'^hashtags/create/ajax/$', view=hashtags.JSONHashtagsCreateView.as_view(), name='hashtags_create_ajax'),
+
 	url(regex=r'^currency/$', view=currency.CurrencyListView.as_view(), name='currency_list'),
 	url(regex=r'^currency/create/ajax/$', view=currency.CurrencyCreateView.as_view(), name='currency_create_ajax'),
 	url(regex=r'^currency/(?P<pk>\d+)/ajax/$', view=currency.CurrencyUpdateView.as_view(), name='currency_update_ajax'),

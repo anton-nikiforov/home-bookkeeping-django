@@ -4,14 +4,6 @@
     margin: 0 0 0 6px;
     text-decoration: none;
 }
-.form-group__tags .label {
-    display: inline-block;
-    margin: 0 6px 0 0;
-    padding: 4px 4px 6px;
-    text-align: left;
-    white-space: normal;
-}
-.form-group__tags {padding-bottom: 18px;}
 .btn-group.btn-group__large {
     width: 75%;
 }
@@ -24,4 +16,43 @@
 }
 .glyphicon.btn {
     top: 0;
+}
+.form-group__tags .glyphicon-remove {
+    color: #fff;
+    float: right;
+    margin: 0 0 0 6px;
+    text-decoration: none;
+}
+.form-group__tags .label {
+    display: inline-block;
+    margin: 0 6px 0 0;
+    padding: 4px 4px 6px;
+    text-align: left;
+    white-space: normal;
+}
+.form-group__tags {
+    padding-bottom: 10px;
+}
+.form-group__list {
+    display: inline-block;
+    margin: 10px 0 0;
+    vertical-align: top;
+    width: 100%;
+}
+.form-group__list > div {
+    display: inline-block;
+    width: 50%;
+}
+.form-group__list > div > * {
+    cursor: pointer;
+}
+.form-group__list label {
+    font-weight: 400;
+    margin: -4px 0 0 10px;
+}
+.form-group__list input {
+    margin: 0;
+}
+.btn-group.btn-group__tags {
+    margin: 0 0 10px;
 }

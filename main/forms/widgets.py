@@ -15,8 +15,9 @@ class MultipleSearch(SelectMultiple):
 		}
 		js = ('js/hashtags.js',)
 
-	item_holder_html = u'''<div class="hashtags_widget">
-	<div class="form-group__tags">{}</div>
+	item_holder_html = u'''<div class="hashtags_widget" 
+	data-search-url="{search}" data-create-url="{create}">
+	<div class="form-group__tags">{tags}</div>
 	<div class="btn-group btn-group__tags btn-group-justified">
 		<div class="btn-group btn-group__large">
 			<input type="text" value="" data-action="findTag" 
@@ -31,9 +32,12 @@ class MultipleSearch(SelectMultiple):
 	<div class="form-group__list"></div></div>'''
 
 
-	item_html = u'''<span class="label label-primary {id}">{title}
-	<a href="javascript:void(0);" class="glyphicon glyphicon-remove">
-	</a>{input}</span>'''
+	item_html = u'''<span class="label label-primary {id}" 
+	data-hashtag="{pk}">{title}<a href="javascript:void(0);" 
+	class="glyphicon glyphicon-remove"></a>{input}</span>'''
+
+	search_url = None
+	create_url = None
 
 	def render(self, name, value, attrs=None, choices=()):
 		if value is None:
@@ -52,6 +56,8 @@ class MultipleSearch(SelectMultiple):
 				input_hidden = format_html('<input{} />', flatatt(input_attrs))
 
 				inputs.append(format_html(self.item_html, id=input_attrs['id'],
-						title=option_label, input=input_hidden))
+					title=option_label, input=input_hidden, pk=option_value))
 								
-		return format_html(self.item_holder_html, mark_safe('\n'.join(inputs)))
+		return format_html(self.item_holder_html,
+					tags=mark_safe('\n'.join(inputs)), search=self.search_url,
+					create=self.create_url)

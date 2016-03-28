@@ -1,13 +1,16 @@
 ﻿# -*- coding: utf-8 -*-
 from django.contrib import messages
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import (
+	ListView, CreateView, UpdateView, DeleteView, View
+)
 from django.core.urlresolvers import reverse_lazy
+
+from braces.views import JSONResponseMixin
+from meta.views import MetadataMixin
 
 from ..forms import HashtagsCreateForm, HashtagsUpdateForm
 from ..models import Hashtags
 from views_json import JSONDeleteView
-
-from meta.views import MetadataMixin
 
 class HashtagsListView(MetadataMixin, ListView):
 	title = 'Hashtags'
@@ -49,4 +52,83 @@ class HashtagsDeleteView(MetadataMixin, DeleteView):
 class JSONHashtagsDeleteView(JSONDeleteView):
 	model = Hashtags
 		
-		
+class JSONHashtagsSearchView(JSONResponseMixin, View):
+	"""
+		Search in create/update views
+		Recieve request from hashtags.js
+	"""
+	http_method_names = ['post']
+
+	def post(self, request, *args, **kwargs):
+
+		title = request.POST.get('tag', None)
+
+		response = {
+			u'action': False,
+			u'tag': title
+		}
+
+		if title is not None:
+			queryset = Hashtags.objects.filter(title__startswith=title)
+			hashtag_ids = request.POST.getlist('choosen[]', None)
+			hashtags_list = {}
+
+			if hashtag_ids is not None:
+				queryset = queryset.exclude(pk__in=hashtag_ids)
+
+				response.update({'choosen': hashtag_ids})
+
+			for hashtag in queryset:
+				hashtags_list[hashtag.pk] = {
+					'id': hashtag.pk,
+					'title': hashtag.title	
+				}
+
+			response.update({
+				u'action': True, 
+				'hashtags': hashtags_list
+			})
+
+		return self.render_json_response(response)
+
+class JSONHashtagsCreateView(JSONResponseMixin, View):
+	"""
+		Create new hashtag in create/update views
+		Recieve request from hashtags.js
+	"""
+	http_method_names = ['post']
+
+	def post(self, request, *args, **kwargs):
+
+		title = request.POST.get('tag', None)
+
+		response = {
+			u'action': False,
+			u'tag': title
+		}
+
+		if title is None:
+			response.update({
+				'message': 'Hashtag is required.'	
+			})
+		else:
+			try:
+				hashtag = Hashtags(title=title)
+				hashtag.save()
+				
+				response.update({
+					u'action': True,
+					'ID': hashtag.id,
+					'info': {}
+				})
+
+				response['info'][hashtag.id] = {
+					'id': hashtag.id,
+					u'title': hashtag.title
+				}
+			except Exception, e:
+				response.update({
+					'message': str(e)
+				})
+
+		return self.render_json_response(response)
