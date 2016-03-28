@@ -76,7 +76,6 @@ $(document).ready(function()
 	
 	HashtagsList.prototype.buildList = function(items)
 	{	
-		console.log(items);
 		for (var i in items) 
 		{
 			this.list.append(
@@ -120,14 +119,18 @@ $(document).ready(function()
 	
 	HashtagsList.prototype.unchoose = function(ID)
 	{
-		delete this.choosen[this.choosen.indexOf(ID)];
-		this.hidden.find('.hashtag_'+ ID).remove();
-		
-		var i = $('#input_' + ID), c = i.length ? i.attr('checked', false) : null;
+		var index = this.choosen.indexOf(ID);
+
+		if(index > -1) {
+			this.choosen.splice(index, 1);
+			this.hidden.find('[data-hashtag="'+ ID +'"]').remove();
+
+			var i = $('#input_' + ID), c = i.length ? i.attr('checked', false) : null;
+		}
 	};
 	
 	HashtagsList.prototype.addChoose = function(hashtag)
-	{	
+	{
 		var info = new Array();
 		info[hashtag['id']] = hashtag;
 	
@@ -144,5 +147,15 @@ $(document).ready(function()
 		$(hashtag.hidden).find('[data-hashtag]').each(function() {
 			hashtag.choosen.push($(this).data('hashtag'));
 		});
+
+		$(this).data('widget', hashtag);
+	});
+
+	$(document).on('click', '.form-group__tags a.glyphicon-remove', function() {
+		var _this = $(this), hashtag = _this.closest('.hashtags_widget').data('widget');
+
+		if(!!hashtag) {
+			hashtag.unchoose(_this.closest('[data-hashtag]').data('hashtag'));
+		}
 	});
 });

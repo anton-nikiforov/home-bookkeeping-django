@@ -27,6 +27,9 @@ class ElementsCreateForm(forms.ModelForm):
 		self.fields['hashtags'].widget.create_url = reverse_lazy(
 			'hashtags_create_ajax')
 
+		#self.fields['hashtags'].queryset = self.fields['hashtags'] \
+		#										.queryset.none()
+
 	class Meta:
 		model = Elements
 		fields = '__all__'
@@ -38,10 +41,11 @@ class ElementsUpdateForm(ElementsCreateForm):
 	
 	def __init__(self, *args, **kwargs):
 		super(ElementsUpdateForm, self).__init__(*args, **kwargs)
-		hashtags_initial = self.initial.get('hashtags', None)
+		'''hashtags_initial = self.initial.get('hashtags', None)
 
 		if hashtags_initial is not None:
-			self.fields['hashtags'].queryset = Hashtags.objects.filter(id__in=hashtags_initial)
+			self.fields['hashtags'].queryset = Hashtags.objects\
+									.filter(id__in=hashtags_initial)'''
 
 class ElementsFilterFormBase(forms.Form):
 	

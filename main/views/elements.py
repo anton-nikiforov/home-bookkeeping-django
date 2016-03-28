@@ -6,10 +6,12 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
-from django.db.models import Sum
+from django.db.models import Sum, Count
 
-from main.forms import ElementsCreateForm, ElementsUpdateForm, ElementsFilterFormBase
-from main.models.elements import Elements
+from main.forms import (
+	ElementsCreateForm, ElementsUpdateForm, ElementsFilterFormBase
+)
+from main.models import Elements, Hashtags
 
 from meta.views import MetadataMixin
 from meta.views import Meta
@@ -66,7 +68,8 @@ def elements_list(request, filter_url=None):
 		'page_obj': page,
 		'is_paginated': page.has_other_pages(),
 		'elements_list': page.object_list,
-		'summary': f.qs.values('category__title', 'currency__symbol').annotate(sum=Sum('total')).order_by('sum')
+		'summary': f.qs.values('category__title', 'currency__symbol') \
+						.annotate(sum=Sum('total')).order_by('sum')
 	}
 
 	return render(request, 'main/elements_list_filter.html', context)
@@ -87,6 +90,12 @@ class ElementsCreateView(MetadataMixin, CreateView):
 	success_message = 'Created'
 	success_url = reverse_lazy('elements_list')
 	title = 'Create record'
+
+	def get_context_data(self, **kwargs):
+		context = super(ElementsCreateView, self).get_context_data(**kwargs)
+		context['hashtags_top'] = Hashtags.objects \
+			.annotate(count=Count('elements__id')).order_by('-count')[:21]
+		return context
 	
 class ElementsUpdateView(ElementsCreateView, UpdateView):
 	form_class = ElementsUpdateForm

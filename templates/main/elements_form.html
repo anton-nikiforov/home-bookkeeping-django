@@ -62,9 +62,19 @@
 						{% if form.hashtags.field.required %} <span class="asteriskField">*</span>{% endif %}
 					</label>
 					<div class="controls col-sm-8">
-						{{ form.hashtags }}
+						{{ form.hashtags }}				
 					</div>				
 				</div>				
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Top 21 hashtags</label>
+					<div class="controls col-sm-8 top_hashtags">
+						{% for hashtag in hashtags_top %}
+							<div class="col-sm-4">
+								<label><a href="javascript:void(0);" data-action="addToChoosen" data-id="{{ hashtag.id }}" data-title="{{ hashtag.title }}">{{ hashtag.title }} ({{ hashtag.count }})</a></label>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
 				<div class="form-group">
 					<div class="col-sm-4"></div>
 					<div class="col-sm-8">
