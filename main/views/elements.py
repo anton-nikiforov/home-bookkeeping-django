@@ -2,9 +2,13 @@
 from django.http import Http404
 from django.http.request import QueryDict, MultiValueDict
 from django.contrib import messages
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import (
+	ListView, CreateView, UpdateView, DeleteView
+)
 from django.core.urlresolvers import reverse_lazy
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import (
+	Paginator, EmptyPage, PageNotAnInteger
+)
 from django.shortcuts import render
 from django.db.models import Sum, Count
 
@@ -25,7 +29,7 @@ class ElementsFilter(django_filters.FilterSet):
 		model = Elements
 		form = ElementsFilterFormBase
 		fields = ['created', 'category', 'hashtags']
-		order_by = ['-created', 'total', '-total']
+		#order_by = ['-created', 'total', '-total']
 
 def elements_list(request, filter_url=None):
 	"""
@@ -75,6 +79,9 @@ def elements_list(request, filter_url=None):
 	return render(request, 'main/elements_list_filter.html', context)
 
 class ElementsListView(MetadataMixin, ListView):
+	'''
+		Deprecated
+	'''
 	title = 'Records'
 	model = Elements
 	paginate_by = 15
@@ -96,6 +103,10 @@ class ElementsCreateView(MetadataMixin, CreateView):
 		context['hashtags_top'] = Hashtags.objects \
 			.annotate(count=Count('elements__id')).order_by('-count')[:21]
 		return context
+
+	def form_valid(self, form):
+		messages.success(self.request, self.success_message, extra_tags='msg')
+		return super(ElementsCreateView, self).form_valid(form)			
 	
 class ElementsUpdateView(ElementsCreateView, UpdateView):
 	form_class = ElementsUpdateForm
