@@ -23,6 +23,9 @@ from meta.views import Meta
 import django_filters
 
 class ElementsFilter(django_filters.FilterSet):
+	"""
+		Filter component class for Elements
+	"""
 	created = django_filters.DateFromToRangeFilter()
 
 	class Meta:
@@ -80,7 +83,7 @@ def elements_list(request, filter_url=None):
 
 class ElementsListView(MetadataMixin, ListView):
 	'''
-		Deprecated
+		Deprecated view for records list
 	'''
 	title = 'Records'
 	model = Elements
@@ -100,8 +103,7 @@ class ElementsCreateView(MetadataMixin, CreateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(ElementsCreateView, self).get_context_data(**kwargs)
-		context['hashtags_top'] = Hashtags.objects \
-			.annotate(count=Count('elements__id')).order_by('-count')[:21]
+		context['hashtags_top'] = Hashtags.get_list(limit=21)
 		return context
 
 	def form_valid(self, form):

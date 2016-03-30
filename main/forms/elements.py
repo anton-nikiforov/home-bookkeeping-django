@@ -2,6 +2,7 @@
 from django import forms
 from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
+from django.utils.html import format_html
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions
@@ -11,6 +12,9 @@ from main.models import Elements, Hashtags
 from main.forms.widgets import MultipleSearch
 
 class ElementsCreateForm(forms.ModelForm):
+	"""
+		Create form
+	"""
 	created = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)
 
 	def __init__(self, *args, **kwargs):
@@ -37,7 +41,9 @@ class ElementsCreateForm(forms.ModelForm):
 		}
 
 class ElementsUpdateForm(ElementsCreateForm):
-	
+	"""
+		Update form
+	"""
 	def __init__(self, *args, **kwargs):
 		super(ElementsUpdateForm, self).__init__(*args, **kwargs)
 
@@ -49,7 +55,9 @@ class ElementsUpdateForm(ElementsCreateForm):
 				.values_list('id', 'title')
 
 class ElementsFilterFormBase(forms.Form):
-	
+	"""
+		Filter form
+	"""
 	def __init__(self, *args, **kwargs):
 		super(ElementsFilterFormBase, self).__init__(*args, **kwargs)
 
@@ -62,6 +70,12 @@ class ElementsFilterFormBase(forms.Form):
 
 		self.helper.layout.append(FormActions(
 			Submit('', 'Search'),
+			HTML(format_html("""
+				<a class="reset_btn" href="{}">Reset</a>
+			""", reverse_lazy('elements_list')))
 		))
 
 		self.fields['created'].widget.attrs['class'] = 'daterange form-control'
+
+		self.fields['hashtags'].widget = forms.CheckboxSelectMultiple()
+		self.fields['hashtags'].choices = Hashtags.get_list()

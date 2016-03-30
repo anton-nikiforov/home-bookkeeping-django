@@ -105,7 +105,7 @@ $(document).ready(function()
 			this.choosen.push(ID);
 			
 			this.hidden.append(
-				_c('span').addClass("label label-primary hashtag_" + ID).data('hashtag', ID).text(this.hashtags[ID]['title']).append([
+				_c('span').addClass("label label-primary hashtag_" + ID).attr('data-hashtag', ID).text(this.hashtags[ID]['title']).append([
 					_c('a').attr('href', 'javascript:void(0);').addClass('glyphicon glyphicon-remove').on('click', this.unchoose.bind(this, ID)),
 					_c('input').attr({
 						'type': 'hidden',

@@ -17,4 +17,5 @@ class Elements(models.Model):
 	hashtags = models.ManyToManyField(Hashtags)
 
 	def __unicode__(self):
-		return ' '.join([self.created.strftime('%d.%m.%Y'), str(self.total), self.currency.symbol])
+		return ' '.join([self.created.strftime('%d.%m.%Y'), 
+			str(self.total), self.currency.symbol])

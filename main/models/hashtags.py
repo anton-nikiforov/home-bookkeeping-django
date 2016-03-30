@@ -13,3 +13,19 @@ class Hashtags(models.Model):
 		
 	def __unicode__(self):
 		return self.title
+
+	@classmethod
+	def get_list(self, limit=None):
+		data = []
+		hashtags = self.objects.annotate(
+			count=models.Count('elements__id')).order_by('-count')
+
+		if limit is not None:
+			hashtags = hashtags[:limit]
+
+		for hashtag in hashtags:
+			data.append((
+				hashtag.id,
+				u'{} ({})'.format(hashtag.title, hashtag.count)
+			))
+		return data

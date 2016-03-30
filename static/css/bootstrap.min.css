@@ -28,3 +28,20 @@ h1 {
 	display: inline-block;
 }
 .top_hashtags label {font-weight: 400;}
+.reset_btn {
+    float: right;
+    line-height: 36px;
+}
+.filter_form .form-group .controls {
+	max-height: 190px;
+	overflow: auto;
+}
+.filter_form .form-group .controls .checkbox {
+	float: left;
+	width: 50%;
+	margin-top: 0px;
+	margin-bottom: 6px;
+}
+.filter_form .form-group .controls .checkbox label {
+	font-size: 12px;
+}

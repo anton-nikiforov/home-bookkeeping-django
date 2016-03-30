@@ -9,8 +9,9 @@
 {% endblock %}
 
 {% block filter %}
-	{% crispy filter.form %}
-
+	<div class="filter_form">
+		{% crispy filter.form %}
+	</div>
 	{% if summary %}
 		<div class="panel panel-default">
 			<div class="panel-heading">Statistics</div>
