@@ -50,5 +50,6 @@ urlpatterns = [
 
 	url(regex=r'^import/$', view=import_view, name='import_view'),
 
+	url('^accounts/', include('django.contrib.auth.urls')),
 	url(r'^admin/', include(admin.site.urls)),
 ]

@@ -1,0 +1,23 @@
+{% load staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {% clear_breadcrumbs %}
+    {% breadcrumb "Home" "/" %}
+{% endblock %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}" />
+		<script>window.csrftoken = '{{ csrf_token }}';</script>
+		{% include 'meta.html' %}
+		<meta http-equiv="Content-Type" content="text/html" />
+	</head>
+	<body>
+		{% block main %}{% endblock main %}
+		<script type="text/javascript" src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+		{% block js %}{% endblock js %}
+	</body>
+</html>

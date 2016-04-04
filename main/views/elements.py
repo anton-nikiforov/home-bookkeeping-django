@@ -59,7 +59,7 @@ def elements_list(request, filter_url=None):
 		.select_related('currency', 'category').prefetch_related('hashtags') \
 		.order_by('-created', 'total'))
 
-	paginator = Paginator(f.qs, 15)
+	paginator = Paginator(f.qs, 17)
 	page = request.GET.get('page')
 	try:
 		page = paginator.page(page)
