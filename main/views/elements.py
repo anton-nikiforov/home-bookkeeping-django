@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.template.loader import render_to_string
 from django.http import Http404
 from django.http.request import QueryDict, MultiValueDict
 from django.contrib import messages
@@ -32,7 +33,6 @@ class ElementsFilter(django_filters.FilterSet):
 		model = Elements
 		form = ElementsFilterFormBase
 		fields = ['created', 'category', 'hashtags']
-		#order_by = ['-created', 'total', '-total']
 
 def elements_list(request, filter_url=None):
 	"""
@@ -128,3 +128,17 @@ class ElementsDeleteView(MetadataMixin, DeleteView):
 		
 	def get_meta_title(self, context):
 		return 'Delete record "{0}"'.format(self.get_object())	
+
+
+def get_summary_by_category():
+	"""
+		Summary grouped by category and currency
+	"""
+	try:
+		summary = Elements.objects.all() \
+			.values('category__title', 'currency__symbol') \
+			.annotate(sum=Sum('total')).order_by('sum')
+	except:
+		return None
+
+	return render_to_string("main/get_summary_by_category.html", {'summary': summary})

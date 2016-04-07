@@ -17,7 +17,18 @@
 		<div class="col-sm-9">
 			<div class="row">
 				<div class="col-sm-12">
-					{% if meta %}<h1>{{ meta.title }}</h1>{% endif %}
+					<div class="row header__">
+						<div class="col-sm-8">
+							{% if meta %}<h1>{{ meta.title }}</h1>{% endif %}
+						</div>
+						<div class="col-sm-4">
+							<div class="col-sm-12">
+								<div class="navbar-right user__info">
+									<span class="glyphicon glyphicon-user"></span> Hello, {{ user.username }} | <a href="{% url 'logout' %}">Quit</a>
+								</div>
+							</div>
+						</div>
+					</div>
 					{% if messages %}
 						{% for msg in messages %}       
 							<div class="alert alert-{{msg.level_tag}}" role="alert">{{msg.message}}</div>

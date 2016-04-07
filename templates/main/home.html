@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<a href="{% url 'import_view' %}">Import data</a>
+	<div class="row">
+		<div class="col-sm-4">
+			{{ summary }}
+		</div>
+		<div class="col-sm-8">
+			{{ summary_by_hashtags }}
+		</div>
+		<div class="col-sm-4"></div>
+	</div>
 {% endblock content %}

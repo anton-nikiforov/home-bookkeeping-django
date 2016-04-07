@@ -45,3 +45,5 @@ h1 {
 .filter_form .form-group .controls .checkbox label {
 	font-size: 12px;
 }
+.header__ {min-height: 59px;}
+.user__info {line-height: 59px;}

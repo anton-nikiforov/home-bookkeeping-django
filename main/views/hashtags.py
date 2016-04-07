@@ -1,9 +1,11 @@
 ﻿# -*- coding: utf-8 -*-
+from django.template.loader import render_to_string
 from django.contrib import messages
 from django.views.generic import (
 	ListView, CreateView, UpdateView, DeleteView, View
 )
 from django.core.urlresolvers import reverse_lazy
+from django.db.models import Sum, Count
 
 from braces.views import JSONResponseMixin
 from meta.views import MetadataMixin
@@ -132,3 +134,18 @@ class JSONHashtagsCreateView(JSONResponseMixin, View):
 				})
 
 		return self.render_json_response(response)
+
+def get_summary_by_hashtags():
+	"""
+		Summary and count grouped by hashtags
+	"""
+	try:
+		summary = Hashtags.objects.all() \
+			.values('title', 'elements__currency__symbol') \
+			.annotate(count=Count('elements__id')) \
+			.annotate(sum=Sum('elements__total')) \
+			.order_by('-count')[:20]
+	except:
+		return None
+
+	return render_to_string("main/get_summary_by_hashtags.html", {'summary': summary})	

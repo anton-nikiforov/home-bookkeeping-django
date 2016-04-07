@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+	<div class="panel-heading">Top 20 hashtags</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="col-sm-4">Hashtag</th>
+				<th class="col-sm-2">Usage</th>
+				<th class="col-sm-2">Currency</th>
+				<th class="col-sm-4">Summary</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in summary %}
+				<tr>
+					<td>{{ item.title }}</td>
+					<td>{{ item.count }}</td>
+					<td>{{ item.elements__currency__symbol }}</td>
+					<td>{{ item.sum }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>					
+	</table>
+</div>		

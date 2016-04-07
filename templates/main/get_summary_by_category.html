@@ -1,0 +1,21 @@
+<div class="panel panel-default">
+	<div class="panel-heading">Statistics by category and currency</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="col-sm-4">Category</th>
+				<th class="col-sm-4">Currency</th>
+				<th class="col-sm-4">Summary</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in summary %}
+				<tr>
+					<td>{{ item.category__title }}</td>
+					<td>{{ item.currency__symbol }}</td>
+					<td>{{ item.sum }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>			
+	</table>
+</div>		

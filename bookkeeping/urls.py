@@ -16,8 +16,9 @@ Including another URLconf
 from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from django.conf import settings
+from django.contrib.auth import logout
 
-from main.views import home, hashtags, currency, category, elements
+from main.views import home, hashtags, currency, category, elements, auth
 from import_app.views import import_view
 
 urlpatterns = [
@@ -41,7 +42,6 @@ urlpatterns = [
 	url(regex=r'^category/(?P<pk>\d+)/ajax/$', view=category.CategoryUpdateView.as_view(), name='category_update_ajax'),
 	url(regex=r'^category/delete/(?P<pk>\d+)/ajax/$', view=category.JSONCategoryDeleteView.as_view(), name='category_delete_ajax'),	
 
-	#url(regex=r'^elements/$', view=elements.ElementsListView.as_view(), name='elements_list'),
 	url(regex=r'^elements/$', view=elements.elements_list, name='elements_list'),
 	url(regex=r'^elements/filter/(?P<filter_url>.+)/$', view=elements.elements_list, name='elements_list_filter'),	
 	url(regex=r'^elements/create/$', view=elements.ElementsCreateView.as_view(), name='elements_create'),
@@ -50,6 +50,8 @@ urlpatterns = [
 
 	url(regex=r'^import/$', view=import_view, name='import_view'),
 
-	url('^accounts/', include('django.contrib.auth.urls')),
+	#url('^accounts/', include('django.contrib.auth.urls')),
+	url(r'^accounts/login/$', auth.login, name='login'),
+	url(r'^accounts/logout/$', logout, name='logout'),
 	url(r'^admin/', include(admin.site.urls)),
 ]
