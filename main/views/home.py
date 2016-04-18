@@ -10,7 +10,7 @@ def home(request):
 	context = {
 		'meta': Meta(**{'title': 'Home'}),
 		'summary': get_summary_by_category(),
-		'summary_by_hashtags': get_summary_by_hashtags()
+		'summary_by_hashtags': get_summary_by_hashtags(20)
 	}
 
 	return render(request, "main/home.html", context)

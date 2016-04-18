@@ -5,7 +5,6 @@ from django.views.generic import (
 	ListView, CreateView, UpdateView, DeleteView, View
 )
 from django.core.urlresolvers import reverse_lazy
-from django.db.models import Sum, Count
 
 from braces.views import JSONResponseMixin
 from meta.views import MetadataMixin
@@ -13,6 +12,8 @@ from meta.views import MetadataMixin
 from ..forms import HashtagsCreateForm, HashtagsUpdateForm
 from ..models import Hashtags
 from views_json import JSONDeleteView
+
+from django.core.cache import cache
 
 class HashtagsListView(MetadataMixin, ListView):
 	title = 'Hashtags'
@@ -135,17 +136,12 @@ class JSONHashtagsCreateView(JSONResponseMixin, View):
 
 		return self.render_json_response(response)
 
-def get_summary_by_hashtags():
+def get_summary_by_hashtags(limit=None):
 	"""
 		Summary and count grouped by hashtags
 	"""
-	try:
-		summary = Hashtags.objects.all() \
-			.values('title', 'elements__currency__symbol') \
-			.annotate(count=Count('elements__id')) \
-			.annotate(sum=Sum('elements__total')) \
-			.order_by('-count')[:20]
-	except:
-		return None
+	context = {
+		'summary': Hashtags.get_summary_by_hashtags(limit)
+	}
 
-	return render_to_string("main/get_summary_by_hashtags.html", {'summary': summary})	
+	return render_to_string("main/get_summary_by_hashtags.html", context)	

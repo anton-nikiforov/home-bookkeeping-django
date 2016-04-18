@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from json import dumps as json_dumps
+import hashlib
+
 from django.template.loader import render_to_string
 from django.http import Http404
 from django.http.request import QueryDict, MultiValueDict
@@ -11,7 +14,6 @@ from django.core.paginator import (
 	Paginator, EmptyPage, PageNotAnInteger
 )
 from django.shortcuts import render
-from django.db.models import Sum, Count
 
 from main.forms import (
 	ElementsCreateForm, ElementsUpdateForm, ElementsFilterFormBase
@@ -20,6 +22,8 @@ from main.models import Elements, Hashtags
 
 from meta.views import MetadataMixin
 from meta.views import Meta
+
+from main.helpers import md5hex
 
 import django_filters
 
@@ -68,31 +72,20 @@ def elements_list(request, filter_url=None):
 	except EmptyPage:
 		page = paginator.page(paginator.num_pages)
 
+	summary_cache_key = md5hex(json_dumps(qdict))
+
 	context = {
 		'filter': f,
 		'meta': Meta(**{'title': 'Records'}),
 		'paginator': paginator,
 		'page_obj': page,
 		'is_paginated': page.has_other_pages(),
-		'elements_list': page.object_list,
-		'summary': f.qs.values('category__title', 'currency__symbol') \
-						.annotate(sum=Sum('total')).order_by('sum')
+		'cache_key': summary_cache_key,
+		'elements_cache_key':  md5hex(''.join([summary_cache_key, str(page.number), str(paginator.count)])),
+		'summary': Elements.get_summary_by_category(f.qs, summary_cache_key)
 	}
 
 	return render(request, 'main/elements_list_filter.html', context)
-
-class ElementsListView(MetadataMixin, ListView):
-	'''
-		Deprecated view for records list
-	'''
-	title = 'Records'
-	model = Elements
-	paginate_by = 15
-
-	def get_queryset(self):
-		return Elements.objects.all().select_related('currency', 'category') \
-				.prefetch_related('hashtags').order_by('-created')
-
 
 class ElementsCreateView(MetadataMixin, CreateView):
 	model = Elements
@@ -134,11 +127,8 @@ def get_summary_by_category():
 	"""
 		Summary grouped by category and currency
 	"""
-	try:
-		summary = Elements.objects.all() \
-			.values('category__title', 'currency__symbol') \
-			.annotate(sum=Sum('total')).order_by('sum')
-	except:
-		return None
+	context = {
+		'summary': Elements.get_summary_by_category()
+	}
 
-	return render_to_string("main/get_summary_by_category.html", {'summary': summary})
+	return render_to_string("main/get_summary_by_category.html", context)

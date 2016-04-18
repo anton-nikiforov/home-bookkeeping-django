@@ -2,7 +2,7 @@
 
 {% load custom_tags %}
 {% load django_bootstrap_breadcrumbs %}
-{% block main %}	
+{% block main %}
 	<div class="container">
 		<div class="col-sm-3 _sidebar">
 			<div class="list-group">
@@ -24,7 +24,7 @@
 						<div class="col-sm-4">
 							<div class="col-sm-12">
 								<div class="navbar-right user__info">
-									<span class="glyphicon glyphicon-user"></span> Hello, {{ user.username }} | <a href="{% url 'logout' %}">Quit</a>
+									<span class="glyphicon glyphicon-user"></span> Hello, {{ user.username }} | <a href="{% url 'logout' %}?next=/accounts/login/">Quit</a>
 								</div>
 							</div>
 						</div>

@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from django.conf import settings
-from django.contrib.auth import logout
+from django.contrib.auth.views import logout
 
 from main.views import home, hashtags, currency, category, elements, auth
 from import_app.views import import_view
@@ -52,6 +52,6 @@ urlpatterns = [
 
 	#url('^accounts/', include('django.contrib.auth.urls')),
 	url(r'^accounts/login/$', auth.login, name='login'),
-	url(r'^accounts/logout/$', logout, name='logout'),
+	url(r'^accounts/logout/$', logout, {'next_page': '/'}, name='logout'),
 	url(r'^admin/', include(admin.site.urls)),
 ]
