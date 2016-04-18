@@ -16,27 +16,7 @@
 		{% endcache %}
 	</div>
 	{% if summary %}
-		<div class="panel panel-default">
-			<div class="panel-heading">Statistics</div>
-			<table class="table">
-				<thead>
-					<tr>
-						<th class="col-sm-4">Category</th>
-						<th class="col-sm-4">Currency</th>
-						<th class="col-sm-4">Summary</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for item in summary %}
-						<tr>
-							<td>{{ item.category__title }}</td>
-							<td>{{ item.currency__symbol }}</td>
-							<td>{{ item.sum }}</td>
-						</tr>
-					{% endfor %}
-				</tbody>			
-			</table>
-		</div>	
+		{{ summary }}
 	{% endif %}
 {% endblock filter %}
 
@@ -46,43 +26,41 @@
 		<div class="form-group">
 			<a class="btn btn-success" href="{% url 'elements_create' %}">Create</a>
 		</div>
-		{#% cache CACHE_TIMEOUT elements_list_filter elements_cache_key %#}
-		    {% if page_obj.object_list %}	
-				<table class="table-stripped table">
-					<thead>
-						<tr>
-							<th class="col-sm-2">Category</th>
-							<th class="col-sm-2">Created</th>
-							<th class="col-sm-2">Total</th>
-							<th class="col-sm-4">Hashtags</th>
-							<th class="col-sm-2"></th>
+	    {% if page_obj.object_list %}	
+			<table class="table-stripped table">
+				<thead>
+					<tr>
+						<th class="col-sm-2">Category</th>
+						<th class="col-sm-2">Created</th>
+						<th class="col-sm-2">Total</th>
+						<th class="col-sm-4">Hashtags</th>
+						<th class="col-sm-2"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for element in page_obj.object_list %}
+						<tr data-tr="{{ element.id }}">				
+							<td>{{ element.category }}</td>
+							<td>{{ element.created }}</td>
+							<td>{{ element.total }} {{ element.currency.symbol }}</td>
+							<td>
+								{% for hashtag in element.hashtags.all %}
+									<span class="label label-primary">{{ hashtag.title }}</span>
+								{% endfor %}	
+							</td>
+							<td>
+								<div style="text-align: center;">
+									<a href="{% url "elements_update" element.id %}" class="btn btn-primary btn-xs  glyphicon glyphicon-pencil"></a>
+									<a href="{% url "elements_delete" element.id %}" class="btn btn-danger btn-xs  glyphicon glyphicon-remove"></a>
+								</div>
+							</td>
 						</tr>
-					</thead>
-					<tbody>
-						{% for element in page_obj.object_list %}
-							<tr data-tr="{{ element.id }}">				
-								<td>{{ element.category }}</td>
-								<td>{{ element.created }}</td>
-								<td>{{ element.total }} {{ element.currency.symbol }}</td>
-								<td>
-									{% for hashtag in element.hashtags.all %}
-										<span class="label label-primary">{{ hashtag.title }}</span>
-									{% endfor %}	
-								</td>
-								<td>
-									<div style="text-align: center;">
-										<a href="{% url "elements_update" element.id %}" class="btn btn-primary btn-xs  glyphicon glyphicon-pencil"></a>
-										<a href="{% url "elements_delete" element.id %}" class="btn btn-danger btn-xs  glyphicon glyphicon-remove"></a>
-									</div>
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>  
-			{% else %}
-				<div class="alert alert-warning" role="alert">Oops, nothing was found.</div>
-			{% endif %}
-		{#% endcache %#}
+					{% endfor %}
+				</tbody>
+			</table>  
+		{% else %}
+			<div class="alert alert-warning" role="alert">Oops, nothing was found.</div>
+		{% endif %}
 	</div>
 </div>
 {% endblock content %}

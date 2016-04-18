@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from json import dumps as json_dumps
-import hashlib
-
 from django.template.loader import render_to_string
 from django.http import Http404
 from django.http.request import QueryDict, MultiValueDict
@@ -22,8 +19,6 @@ from main.models import Elements, Hashtags
 
 from meta.views import MetadataMixin
 from meta.views import Meta
-
-from main.helpers import md5hex
 
 import django_filters
 
@@ -72,17 +67,14 @@ def elements_list(request, filter_url=None):
 	except EmptyPage:
 		page = paginator.page(paginator.num_pages)
 
-	summary_cache_key = md5hex(json_dumps(qdict))
-
 	context = {
 		'filter': f,
 		'meta': Meta(**{'title': 'Records'}),
 		'paginator': paginator,
 		'page_obj': page,
 		'is_paginated': page.has_other_pages(),
-		'cache_key': summary_cache_key,
-		'elements_cache_key':  md5hex(''.join([summary_cache_key, str(page.number), str(paginator.count)])),
-		'summary': Elements.get_summary_by_category(f.qs, summary_cache_key)
+		'cache_key': f.qs._cache_key(),
+		'summary': get_summary_by_category(f.qs)
 	}
 
 	return render(request, 'main/elements_list_filter.html', context)
@@ -123,12 +115,18 @@ class ElementsDeleteView(MetadataMixin, DeleteView):
 		return 'Delete record "{0}"'.format(self.get_object())	
 
 
-def get_summary_by_category():
+def get_summary_by_category(queryset=None):
 	"""
 		Summary grouped by category and currency
 	"""
+	if queryset is None:
+		queryset = Elements.objects.all()
+	from django.db.models import Sum
+	summary = queryset \
+		.values('category__title', 'currency__symbol') \
+		.annotate(sum=Sum('total')).order_by('sum')
 	context = {
-		'summary': Elements.get_summary_by_category()
+		'summary': summary
 	}
 
 	return render_to_string("main/get_summary_by_category.html", context)

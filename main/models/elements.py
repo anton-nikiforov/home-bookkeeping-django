@@ -29,19 +29,3 @@ class Elements(models.Model):
 	def __unicode__(self):
 		return ' '.join([self.created.strftime('%d.%m.%Y'), \
 			str(self.total), self.currency.symbol])
-
-	@classmethod
-	def get_summary_by_category(self, queryset=None, cache_key=None):
-		cache_key = cache_key if queryset is not None else None		
-		key = 'get_summary_by_category_{}'.format(cache_key)
-		queryset = queryset if queryset is not None else self.objects.all() 
-		summary = cache.get(key)
-		if summary is None:
-			try:
-				summary = queryset \
-					.values('category__title', 'currency__symbol') \
-					.annotate(sum=models.Sum('total')).order_by('sum')
-				cache.set(key, summary)
-			except:
-				pass
-		return summary

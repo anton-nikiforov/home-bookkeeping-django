@@ -140,8 +140,16 @@ def get_summary_by_hashtags(limit=None):
 	"""
 		Summary and count grouped by hashtags
 	"""
+	from django.db.models import Sum, Count
+	summary = Hashtags.objects.all() \
+		.values('title', 'elements__currency__symbol') \
+		.annotate(count=Count('elements__id')) \
+		.annotate(sum=Sum('elements__total')) \
+		.order_by('-count')
+	if limit is not None:
+		summary = summary[:limit]
 	context = {
-		'summary': Hashtags.get_summary_by_hashtags(limit)
+		'summary': summary
 	}
 
 	return render_to_string("main/get_summary_by_hashtags.html", context)	
