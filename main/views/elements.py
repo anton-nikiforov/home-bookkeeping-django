@@ -55,8 +55,7 @@ def elements_list(request, filter_url=None):
 	qdict.update(MultiValueDict(filter_data))			
 
 	f = ElementsFilter(qdict or request.GET, queryset=Elements.objects.all() \
-		.select_related('currency', 'category').prefetch_related('hashtags') \
-		.order_by('-created', 'total'))
+												.order_by('-created', 'total'))
 
 	paginator = Paginator(f.qs, 17)
 	page = request.GET.get('page')
@@ -119,12 +118,15 @@ def get_summary_by_category(queryset=None):
 	"""
 		Summary grouped by category and currency
 	"""
-	if queryset is None:
-		queryset = Elements.objects.all()
-	from django.db.models import Sum
-	summary = queryset \
-		.values('category__title', 'currency__symbol') \
-		.annotate(sum=Sum('total')).order_by('sum')
+	try:
+		if queryset is None:
+			queryset = Elements.objects.all()
+		from django.db.models import Sum
+		summary = queryset \
+			.values('category__title', 'currency__symbol') \
+			.annotate(sum=Sum('total')).order_by('sum')
+	except:
+		summary = None
 	context = {
 		'summary': summary
 	}

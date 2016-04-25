@@ -8,13 +8,20 @@ from . import (
 )
 from .models import CustomCacheManager
 
+class ElementsCustomCacheManager(CustomCacheManager):
+
+	def get_queryset(self):
+		return super(ElementsCustomCacheManager, self).get_queryset() \
+					.select_related('currency', 'category') \
+					.prefetch_related('hashtags')
+
 class Elements(models.Model):
 
 	class Meta(object):
 		verbose_name="Element"
 		verbose_name_plural="Elements"
 				
-	objects = CustomCacheManager()
+	objects = ElementsCustomCacheManager()
 
 	category = models.ForeignKey(Category, on_delete=models.CASCADE,
 				**{'default': settings.DEFAULT_CATEGORY_ID})
@@ -28,4 +35,4 @@ class Elements(models.Model):
 
 	def __unicode__(self):
 		return ' '.join([self.created.strftime('%d.%m.%Y'), \
-			str(self.total), self.currency.symbol])
+			str(self.total), str(self.currency)])

@@ -18,7 +18,7 @@ class CategoryListView(MetadataMixin, ListView):
 		context = super(CategoryListView, self).get_context_data(**kwargs)
 		categories = context['category_list'] 
 		
-		for category in categories:	
+		for category in categories:
 			setattr(category, 'form_update', CategoryUpdateForm(instance=category, prefix=getattr(category, 'id')))
 			
 		context['category_list'] = categories			
