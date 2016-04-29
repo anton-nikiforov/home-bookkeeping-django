@@ -25,7 +25,7 @@ class CustomQuerySet(QuerySet):
 
 	def iterator(self):
 		cache_key = self._cache_key()
-		data = cache.get(cache_key)	
+		data = cache.get(cache_key)
 		if data is not None:
 			return iter(data)
 
@@ -82,4 +82,4 @@ class CustomQuerySet(QuerySet):
 		if hasattr(self, 'flat'):
 			md.update(str(self.flat))
 
-		return 'q:%s' % md.hexdigest()
+		return '%s:q:%s' % (self.model.__name__, md.hexdigest())

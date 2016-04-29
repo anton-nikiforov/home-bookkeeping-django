@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Hashtags
+from .models import hashtags
 
-admin.site.register(Hashtags)
+admin.site.register(hashtags.Hashtags)

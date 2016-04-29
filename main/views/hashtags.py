@@ -13,8 +13,6 @@ from ..forms import HashtagsCreateForm, HashtagsUpdateForm
 from ..models import Hashtags
 from views_json import JSONDeleteView
 
-from django.core.cache import cache
-
 class HashtagsListView(MetadataMixin, ListView):
 	title = 'Hashtags'
 	paginate_by = 15

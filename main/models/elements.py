@@ -3,9 +3,9 @@ from django.db import models
 from django.conf import settings
 from django.core.cache import cache
 
-from . import (
-	Category, Hashtags, Currency
-)
+from .category import Category
+from .currency import Currency
+from .hashtags import Hashtags
 from .models import CustomCacheManager
 
 class ElementsCustomCacheManager(CustomCacheManager):
