@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 import six, hashlib
 from funcy import memoize
 
@@ -27,3 +29,17 @@ def stamp_fields(model):
     """
     stamp = str([(f.name, f.attname, f.db_column, f.__class__) for f in model._meta.fields])
     return md5hex(stamp)    
+
+def reorder_fields(fields, order):
+    """Reorder form fields by order, removing items not in order.
+
+    >>> reorder_fields(
+    ...     OrderedDict([('a', 1), ('b', 2), ('c', 3)]),
+    ...     ['b', 'c', 'a'])
+    OrderedDict([('b', 2), ('c', 3), ('a', 1)])
+    """
+    for key, v in fields.items():
+        if key not in order:
+            del fields[key]
+
+    return OrderedDict(sorted(fields.items(), key=lambda k: order.index(k[0])))

@@ -10,6 +10,7 @@ from crispy_forms.layout import Submit, HTML
 
 from main.models import Elements, Hashtags
 from main.forms.widgets import MultipleSearch
+from main.helpers import reorder_fields
 
 class ElementsCreateForm(forms.ModelForm):
 	"""
@@ -58,8 +59,13 @@ class ElementsFilterFormBase(forms.Form):
 	"""
 		Filter form
 	"""
+	is_exclude = forms.BooleanField(required=False, label='Exclude `Hashtags`')
+
 	def __init__(self, *args, **kwargs):
 		super(ElementsFilterFormBase, self).__init__(*args, **kwargs)
+
+		self.fields = reorder_fields(self.fields, ['created', 'category',
+									'hashtags', 'is_exclude'])
 
 		self.helper = FormHelper(self)
 
@@ -75,7 +81,12 @@ class ElementsFilterFormBase(forms.Form):
 			""", reverse_lazy('elements_list')))
 		))
 
-		self.fields['created'].widget.attrs['class'] = 'daterange form-control'
+		if 'created' in self.fields:
+			self.fields['created'].widget.attrs['class'] = 'daterange form-control'
 
-		self.fields['hashtags'].widget = forms.CheckboxSelectMultiple()
-		self.fields['hashtags'].choices = Hashtags.get_list()
+		if 'hashtags' in self.fields:
+			self.fields['hashtags'].choices = Hashtags.get_list()
+
+	def exclude_hashtags(self):
+		return self.is_valid() and 'is_exclude' in self.cleaned_data \
+				and self.cleaned_data['is_exclude']

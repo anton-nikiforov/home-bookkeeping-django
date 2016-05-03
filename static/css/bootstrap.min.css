@@ -47,3 +47,5 @@ h1 {
 }
 .header__ {min-height: 59px;}
 .user__info {line-height: 59px;}
+.checkbox input[type="checkbox"], 
+.checkbox input[type="radio"] {margin-top: 0;}

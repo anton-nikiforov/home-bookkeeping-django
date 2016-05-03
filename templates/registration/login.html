@@ -19,7 +19,7 @@
     {% endif %}
 {% endif %}
 						<form role="form" action="{% url 'login' %}" method="POST">
-							<input type="hidden" name="next" value="{{ next }}" />
+							<input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}/{% endif %}" />
 							{% csrf_token %}
 							<fieldset>
 								<div class="row">

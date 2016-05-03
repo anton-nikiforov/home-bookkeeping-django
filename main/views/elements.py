@@ -11,6 +11,7 @@ from django.core.paginator import (
 	Paginator, EmptyPage, PageNotAnInteger
 )
 from django.shortcuts import render
+from django import forms
 
 from main.forms import (
 	ElementsCreateForm, ElementsUpdateForm, ElementsFilterFormBase
@@ -27,6 +28,12 @@ class ElementsFilter(django_filters.FilterSet):
 		Filter component class for Elements
 	"""
 	created = django_filters.DateFromToRangeFilter()
+	hashtags = django_filters.MultipleChoiceFilter(widget=forms.CheckboxSelectMultiple())
+
+	def __init__(self, data=None, queryset=None, prefix=None, strict=None):
+		super(ElementsFilter, self).__init__(data, queryset, prefix, strict)
+		if self.form.exclude_hashtags():
+			self.filters['hashtags'].exclude=True
 
 	class Meta:
 		model = Elements
@@ -53,9 +60,9 @@ def elements_list(request, filter_url=None):
 
 	qdict = QueryDict('', mutable=True)
 	qdict.update(MultiValueDict(filter_data))			
+	element_qs = Elements.objects.all().order_by('-created', 'total')
 
-	f = ElementsFilter(qdict or request.GET, queryset=Elements.objects.all() \
-												.order_by('-created', 'total'))
+	f = ElementsFilter(data=qdict or request.GET, queryset=element_qs)
 
 	paginator = Paginator(f.qs, 17)
 	page = request.GET.get('page')

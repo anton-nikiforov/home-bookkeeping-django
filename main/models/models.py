@@ -18,7 +18,7 @@ class CustomQuerySet(QuerySet):
 	def count(self):
 		cache_key = self._cache_key()
 		data_count = cache.get(cache_key)
-		if data_count is None:
+		if not data_count:
 			data_count = super(CustomQuerySet, self).count()
 			cache.set(cache_key, data_count)
 		return data_count
@@ -26,8 +26,12 @@ class CustomQuerySet(QuerySet):
 	def iterator(self):
 		cache_key = self._cache_key()
 		data = cache.get(cache_key)
-		if data is not None:
-			return iter(data)
+
+		if data:
+			try:
+				return iter(data)
+			except:
+				return data
 
 		def iterate():
 			self._result_cache = []
@@ -36,23 +40,7 @@ class CustomQuerySet(QuerySet):
 				yield obj
 			cache.set(cache_key, self._result_cache)
 
-		return iterate()	
-
-	''' Uses iterator to fetch data
-	def get(self, *args, **kwargs):
-		if not args \
-				and not self.query.select_related \
-				and not self.query.where.children:
-			cache_key = (self.__class__, self.model) + tuple(sorted(kwargs.items()))
-			data = cache.get(cache_key)
-			if data is None:
-				data = super(CustomQuerySet, self).get(*args, **kwargs)
-				cache.set(cache_key, data)
-		else:
-			return super(CustomQuerySet, self).get(*args, **kwargs)
-
-		return data
-	'''
+		return iterate()
 	
 	def _cache_key(self):
 		"""
