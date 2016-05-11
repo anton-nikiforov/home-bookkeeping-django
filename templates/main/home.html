@@ -2,13 +2,16 @@
 
 {% block content %}
 	<div class="row">
-		{% if summary %}
-			<div class="col-sm-4">
+		<div class="col-sm-6">
+			{% if summary %}
 				{{ summary }}
-			</div>
-		{% endif %}
+			{% endif %}
+			{% if summary_by_year_month %}
+				{{ summary_by_year_month }}
+			{% endif %}			
+		</div>
 		{% if summary_by_hashtags %}
-			<div class="col-sm-8">
+			<div class="col-sm-6">
 				{{ summary_by_hashtags }}
 			</div>
 		{% endif %}

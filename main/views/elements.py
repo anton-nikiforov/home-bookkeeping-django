@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.db.models import Sum
 from django.template.loader import render_to_string
 from django.http import Http404
 from django.http.request import QueryDict, MultiValueDict
@@ -50,14 +51,12 @@ def elements_list(request, filter_url=None):
 	if filter_url:
 		for part in filter_url.split(';'):
 			params = part.split('-is-')
-
 			try:
 				items = params[1].split('-or-')
 			except:
 				raise Http404("Url does not exist.")
-
 			filter_data[params[0]] = items
-
+			
 	qdict = QueryDict('', mutable=True)
 	qdict.update(MultiValueDict(filter_data))			
 	element_qs = Elements.objects.all().order_by('-created', 'total')
@@ -128,14 +127,34 @@ def get_summary_by_category(queryset=None):
 	try:
 		if queryset is None:
 			queryset = Elements.objects.all()
-		from django.db.models import Sum
 		summary = queryset \
 			.values('category__title', 'currency__symbol') \
 			.annotate(sum=Sum('total')).order_by('sum')
 	except:
 		summary = None
-	context = {
-		'summary': summary
-	}
+	if summary:
+		return render_to_string("main/get_summary_by_category.html", {
+			'summary': summary
+			})
+	return False
 
-	return render_to_string("main/get_summary_by_category.html", context)
+def get_summary_by_year_month():
+	"""
+		Summary grouped by year, month, category and currency
+	"""
+	try:
+		summary = Elements.objects \
+			.extra(select={
+				'created_year': 'date_format(created, "%%Y")',
+				'created_month': 'date_format(created, "%%M")'}) \
+			.values('created_year', 'created_month', 
+					'category__title', 'currency__symbol') \
+			.annotate(sum=Sum('total')) \
+			.order_by('-created_year', '-created_month')
+	except:
+		summary = None
+	if summary:
+		return render_to_string("main/get_summary_by_year_month.html", {
+			'summary': summary
+			})
+	return False
