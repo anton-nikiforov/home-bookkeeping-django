@@ -146,11 +146,12 @@ def get_summary_by_year_month():
 		summary = Elements.objects \
 			.extra(select={
 				'created_year': 'date_format(created, "%%Y")',
+				'created_month_order': 'date_format(created, "%%m")',
 				'created_month': 'date_format(created, "%%M")'}) \
 			.values('created_year', 'created_month', 
 					'category__title', 'currency__symbol') \
 			.annotate(sum=Sum('total')) \
-			.order_by('-created_year', '-created_month')
+			.order_by('-created_year', '-created_month_order')
 	except:
 		summary = None
 	if summary:
